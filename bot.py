@@ -27,7 +27,14 @@ def get_data_from_last_update(update: dict) -> tuple:
 def start(chat_id):
     url = f'{URL}/sendMessage'
 
-    payload = {"chat_id": chat_id, "text": 'Welcome to out bot!'}
+    with open('text.md') as f:
+        text = f.read()
+
+    payload = {
+        "chat_id": chat_id, 
+        "text": text,
+        "parse_mode": "MarkdownV2",
+    }
     response = requests.get(url=url, params=payload)
 
     return response.status_code
