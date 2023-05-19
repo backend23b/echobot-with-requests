@@ -24,6 +24,15 @@ def get_data_from_last_update(update: dict) -> tuple:
     return update_id, chat_id, text
 
 
+def start(chat_id):
+    url = f'{URL}/sendMessage'
+
+    payload = {"chat_id": chat_id, "text": 'Welcome to out bot!'}
+    response = requests.get(url=url, params=payload)
+
+    return response.status_code
+
+
 def send_message(chat_id, text):
     url = f'{URL}/sendMessage'
 
@@ -43,8 +52,12 @@ while True:
     current_update_id, chat_id, text = get_data_from_last_update(current_update)
 
     if last_update_id != current_update_id:
-        sc = send_message(chat_id, text)
-        print(sc)
+        if text == '/start':
+            start(chat_id=chat_id)
+        else:
+            send_message(chat_id, text)
+
+        print(chat_id, text)
 
         last_update_id = current_update_id
 
